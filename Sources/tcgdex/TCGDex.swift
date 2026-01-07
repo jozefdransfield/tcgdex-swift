@@ -12,7 +12,7 @@ public class TCGDex {
     private let session = URLSession.shared
     private let decoder = JSONDecoder()
     
-    init() {
+    public init() {
         decoder.dateDecodingStrategy = .iso8601
     }
     

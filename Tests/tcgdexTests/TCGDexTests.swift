@@ -1,5 +1,5 @@
 import Testing
-@testable import tcgdex
+import TCGDex
 
 @Test func canDecodeAPokemonCard() async throws {
     let result = try await TCGDex().card(id: "sv05-019")

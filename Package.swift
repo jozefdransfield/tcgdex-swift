@@ -4,26 +4,26 @@
 import PackageDescription
 
 let package = Package(
-    name: "tcgdex",
+    name: "TCGDex",
     platforms: [
-            .macOS(.v12),    // This fixes your session.data error
-            .iOS(.v15),      // Keeps it consistent with modern Swift Concurrency
+            .macOS(.v12),
+            .iOS(.v15),
             .watchOS(.v8),
             .tvOS(.v15)
         ],
     products: [
         .library(
-            name: "tcgdex",
-            targets: ["tcgdex"]
+            name: "TCGDex",
+            targets: ["TCGDex"]
         ),
     ],
     targets: [
         .target(
-            name: "tcgdex"
+            name: "TCGDex"
         ),
         .testTarget(
-            name: "tcgdexTests",
-            dependencies: ["tcgdex"]
+            name: "TCGDexTests",
+            dependencies: ["TCGDex"]
         ),
     ]
 )
