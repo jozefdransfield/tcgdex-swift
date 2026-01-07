@@ -412,10 +412,9 @@ public struct Pricing: Codable, Sendable {
     public let tcgplayer: TCGPlayerPricing?
     public let cardmarket: CardMarketPricing?
     
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.tcgplayer = try container.decodeIfPresent(TCGPlayerPricing.self, forKey: .tcgplayer)
-        self.cardmarket = try container.decodeIfPresent(CardMarketPricing.self, forKey: .cardmarket)
+    public init(tcgplayer: TCGPlayerPricing?, cardmarket: CardMarketPricing?) {
+        self.tcgplayer = tcgplayer
+        self.cardmarket = cardmarket
     }
 }
 
