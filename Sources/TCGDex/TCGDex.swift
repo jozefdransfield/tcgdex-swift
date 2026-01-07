@@ -65,31 +65,31 @@ public class TCGDex {
 }
 
 public struct Serie : Codable {
-    let id: String
-    let logo: String
-    let name: String
-    let sets: [SetBrief]
+    public let id: String
+    public let logo: String
+    public let name: String
+    public let sets: [SetBrief]
 }
 
 
-public struct SetBrief: Codable {
+public struct SetBrief: Codable, Sendable  {
     public let id: String
     public let name: String
     public let logo: String?
     public let cardCount: SetBriefCardCount
 }
 
-public struct SetBriefCardCount : Codable {
-    let total: Int
-    let official: Int
+public struct SetBriefCardCount : Codable, Sendable {
+    public let total: Int
+    public let official: Int
 }
 
-public struct Legal: Codable {
+public struct Legal: Codable, Sendable {
     public let expanded: Bool
     public let standard: Bool
 }
 
-public struct Set: Codable {
+public struct Set: Codable, Sendable {
     public let cardCount: SetCardCount
     public let cards: [CardBrief]
     public let id: String
@@ -101,28 +101,28 @@ public struct Set: Codable {
     public let symbol: String
 }
 
-public struct SerieBrief: Codable {
+public struct SerieBrief: Codable, Sendable {
     public let id: String
     public let name: String
 }
 
-public struct SetCardCount : Codable {
-    let firstEd: Int
-    let holo: Int
-    let normal: Int
-    let official: Int
-    let reverse: Int
-    let total: Int
+public struct SetCardCount : Codable, Sendable {
+    public let firstEd: Int
+    public let holo: Int
+    public let normal: Int
+    public let official: Int
+    public let reverse: Int
+    public let total: Int
 }
 
-public struct CardBrief: Codable {
-    let id: String
-    let localId: String
-    let name: String
-    let image: String?
+public struct CardBrief: Codable, Sendable {
+    public let id: String
+    public let localId: String
+    public let name: String
+    public let image: String?
 }
 
-public enum CardType: Decodable {
+public enum CardType: Decodable, Sendable {
     case pokemon(PokemonCard)
     case trainer(TrainerCard)
     case energy(EnergyCard)
@@ -167,7 +167,7 @@ public protocol Card {
     var legal: Legal {get}
 }
 
-public struct TrainerCard: Card, Codable {
+public struct TrainerCard: Card, Codable, Sendable {
     public let id: String
     public let localId: String
     public let name: String
@@ -186,7 +186,7 @@ public struct TrainerCard: Card, Codable {
     public let trainerType: String?
 }
 
-public struct EnergyCard: Card, Codable {
+public struct EnergyCard: Card, Codable, Sendable {
     public let id: String
     public let localId: String
     public let name: String
@@ -205,7 +205,7 @@ public struct EnergyCard: Card, Codable {
     public let energyType: String
 }
 
-public struct PokemonCard: Card, Codable {
+public struct PokemonCard: Card, Codable, Sendable {
     public let id: String
     public let localId: String
     public let name: String
@@ -231,19 +231,19 @@ public struct PokemonCard: Card, Codable {
     public let item: PokemonCardItem?
 }
 
-public struct PokemonCardItem : Codable {
-    let name: String
-    let effect: String
+public struct PokemonCardItem : Codable, Sendable {
+    public let name: String
+    public let effect: String
 }
 
-public struct CardVariants: Codable {
+public struct CardVariants: Codable, Sendable {
     public let normal: Bool
     public let reverse: Bool
     public let holo: Bool
     public let firstEdition: Bool
 }
 
-public struct Booster: Codable {
+public struct Booster: Codable, Sendable{
     public let id: String
     public let name: String
     public let logo: String?
@@ -259,12 +259,12 @@ public struct Booster: Codable {
     }
 }
 
-public struct Pricing: Codable {
+public struct Pricing: Codable, Sendable {
     public let tcgplayer: TCGPlayerPricing?
     public let cardmarket: CardMarketPricing?
 }
 
-public struct TCGPlayerPricing: Codable {
+public struct TCGPlayerPricing: Codable, Sendable {
     public let updated: Date
     public let unit: String
     public let normal: TCGPlayerPricingVariants?
@@ -280,7 +280,7 @@ public struct TCGPlayerPricing: Codable {
     }
 }
 
-public struct TCGPlayerPricingVariants: Codable {
+public struct TCGPlayerPricingVariants: Codable, Sendable {
     public let lowPrice: Double?
     public let midPrice: Double?
     public let highPrice: Double?
@@ -289,7 +289,7 @@ public struct TCGPlayerPricingVariants: Codable {
     
 }
 
-public struct CardMarketPricing: Codable {
+public struct CardMarketPricing: Codable, Sendable {
     public let updated: Date
     public let unit: String
     public let avg: Double?
@@ -305,7 +305,7 @@ public struct CardMarketPricing: Codable {
     public let avg7Holo: Double?
     public let avg30Holo: Double?
     
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, Sendable {
         case updated
         case unit
         case avg
