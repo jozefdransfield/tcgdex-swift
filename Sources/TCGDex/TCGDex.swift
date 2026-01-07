@@ -440,7 +440,7 @@ public struct TCGPlayerPricing: Codable, Sendable {
         self.normal = normal
         self.holofoil = holofoil
         self.reverseholofoil = reverseholofoil
-    }\
+    }
 }
 
 public struct TCGPlayerPricingVariants: Codable, Sendable {
