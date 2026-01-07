@@ -64,7 +64,7 @@ public class TCGDex {
     
 }
 
-public struct Serie : Codable {
+public struct Serie : Codable, Identifiable {
     public let id: String
     public let logo: String
     public let name: String
@@ -72,7 +72,7 @@ public struct Serie : Codable {
 }
 
 
-public struct SetBrief: Codable, Sendable  {
+public struct SetBrief: Codable, Sendable, Identifiable  {
     public let id: String
     public let name: String
     public let logo: String?
@@ -89,7 +89,7 @@ public struct Legal: Codable, Sendable {
     public let standard: Bool
 }
 
-public struct Set: Codable, Sendable {
+public struct Set: Codable, Sendable, Identifiable {
     public let cardCount: SetCardCount
     public let cards: [CardBrief]
     public let id: String
@@ -101,7 +101,7 @@ public struct Set: Codable, Sendable {
     public let symbol: String
 }
 
-public struct SerieBrief: Codable, Sendable {
+public struct SerieBrief: Codable, Sendable, Identifiable {
     public let id: String
     public let name: String
 }
@@ -115,26 +115,37 @@ public struct SetCardCount : Codable, Sendable {
     public let total: Int
 }
 
-public struct CardBrief: Codable, Sendable {
+public struct CardBrief: Codable, Sendable, Identifiable {
     public let id: String
     public let localId: String
     public let name: String
     public let image: String?
 }
 
-public enum CardType: Decodable, Sendable {
+public enum CardType: Decodable, Sendable, Identifiable {
     case pokemon(PokemonCard)
     case trainer(TrainerCard)
     case energy(EnergyCard)
-
+    
+    public var id: String {
+        switch self {
+        case .pokemon(let data):
+            return data.id
+        case .trainer(let data):
+            return data.id
+        case .energy(let data):
+            return data.id
+        }
+    }
+    
     enum CodingKeys: String, CodingKey {
         case category = "category"
     }
-
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(String.self, forKey: .category)
-
+        
         switch type {
         case "Pokemon":
             let data = try PokemonCard(from: decoder)
@@ -167,7 +178,7 @@ public protocol Card {
     var legal: Legal {get}
 }
 
-public struct TrainerCard: Card, Codable, Sendable {
+public struct TrainerCard: Card, Codable, Sendable, Identifiable {
     public let id: String
     public let localId: String
     public let name: String
@@ -186,7 +197,7 @@ public struct TrainerCard: Card, Codable, Sendable {
     public let trainerType: String?
 }
 
-public struct EnergyCard: Card, Codable, Sendable {
+public struct EnergyCard: Card, Codable, Sendable, Identifiable {
     public let id: String
     public let localId: String
     public let name: String
@@ -205,7 +216,7 @@ public struct EnergyCard: Card, Codable, Sendable {
     public let energyType: String
 }
 
-public struct PokemonCard: Card, Codable, Sendable {
+public struct PokemonCard: Card, Codable, Sendable, Identifiable {
     public let id: String
     public let localId: String
     public let name: String
@@ -243,7 +254,7 @@ public struct CardVariants: Codable, Sendable {
     public let firstEdition: Bool
 }
 
-public struct Booster: Codable, Sendable{
+public struct Booster: Codable, Sendable, Identifiable{
     public let id: String
     public let name: String
     public let logo: String?
