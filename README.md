@@ -1,4 +1,4 @@
-#TCGDex Swift
+# TCGDex Swift
 
 The SDK provides objects that model the tcgdex data and a service to access them via.
 
