@@ -8,16 +8,23 @@ public enum NetworkError: Error {
 
 public class TCGDex {
     
-    private let baseURL = "https://api.tcgdex.net/v2/en"
+    private let baseURL = "https://api.tcgdex.net/v2/"
     private let session = URLSession.shared
     private let decoder = JSONDecoder()
+    private let lang: Language
     
     public init() {
         decoder.dateDecodingStrategy = .iso8601
+        lang = Language.English
+    }
+    
+    public init(lang: Language) {
+        decoder.dateDecodingStrategy = .iso8601
+        self.lang = lang
     }
     
     public func cards() async throws -> [CardBrief] {
-        return try await fetch("/cards")
+        return try await fetch("/cards") ?? []
     }
     
     public func card(id: String) async throws -> CardType? {
@@ -29,7 +36,7 @@ public class TCGDex {
     }
     
     public func sets() async throws -> [SetBrief] {
-        return try await fetch("/sets")
+        return try await fetch("/sets") ?? []
     }
     
     public func serie(id: String) async throws -> Serie? {
@@ -37,32 +44,64 @@ public class TCGDex {
     }
     
     public func series() async throws -> [SerieBrief] {
-        return try await fetch("/series")
+        return try await fetch("/series") ?? []
     }
     
     
-    private func fetch<T: Decodable>(_ endpoint: String) async throws -> T {
-        guard let url = URL(string: "\(baseURL)/\(endpoint)") else {
+    private func fetch<T: Decodable>(_ endpoint: String) async throws -> T? {
+        guard let url = URL(string: "\(baseURL)\(lang.rawValue)\(endpoint)") else {
             throw NetworkError.badURL
         }
         
         let (data, response) = try await session.data(from: url)
         
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
+        if let httpResponse = response as? HTTPURLResponse {
+            
+            guard (200...299).contains(httpResponse.statusCode) else {
+                
+                if httpResponse.statusCode == 404 {
+                    return nil as T?
+                }
+                
+                throw NetworkError.invalidResponse
+            }
+            
+            do {
+                return try decoder.decode(T.self, from: data)
+            } catch {
+                print(error)
+                
+                throw NetworkError.decodingError
+            }
+            
+        } else {
             throw NetworkError.invalidResponse
         }
-        
-        do {
-            return try decoder.decode(T.self, from: data)
-        } catch {
-            print(error)
-            
-            throw NetworkError.decodingError
-        }
     }
-    
 }
+
+//en, fr, es, es-mx, it, pt, pt-br, pt-pt, de, nl, pl, ru, ja, ko, zh-tw, id, th, zh-cn
+public enum Language: String {
+    case English = "en"
+    case French = "fr"
+    case Spanish = "es"
+    case Spanish_Mexico = "es-mx"
+    case Italian = "it"
+    case Portuguese = "pt"
+    case Portuguese_Brazil = "pt-br"
+    case Portuguese_Portugal = "pt-pt"
+    case German = "de"
+    case Dutch = "nl"
+    case Polish = "pl"
+    case Russian = "ru"
+    case Japanese = "ja"
+    case Korean = "ko"
+    case ChineseTraditional = "zh-tw"
+    case Indonesian = "id"
+    case Thai = "th"
+    case ChineseSimplified = "zh-cn"
+}
+
 
 public struct Serie : Codable, Identifiable {
     public let id: String

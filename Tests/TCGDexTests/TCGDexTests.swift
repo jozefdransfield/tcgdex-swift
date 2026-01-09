@@ -1,8 +1,23 @@
 import Testing
 import TCGDex
 
+@Test func anUnknownCardComesBackAsNil() async throws {
+    let result = try await TCGDex().card(id: "bad-id")
+    
+    #expect(result == nil)
+}
+
 @Test func canDecodeAPokemonCard() async throws {
     let result = try await TCGDex().card(id: "sv05-019")
+    
+    guard case .pokemon = result else {
+        Issue.record("Expected to fetch a Pokemon card")
+        return
+    }
+}
+
+@Test func canDecodeAPokemonCardInADifferentLanguage() async throws {
+    let result = try await TCGDex(lang: .Japanese).card(id: "VS1-004")
     
     guard case .pokemon = result else {
         Issue.record("Expected to fetch a Pokemon card")
