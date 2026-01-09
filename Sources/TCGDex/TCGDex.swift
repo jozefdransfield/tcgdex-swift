@@ -289,7 +289,7 @@ public struct TrainerCard: Card, Codable, Sendable, Identifiable {
     public let updated: Date
     public let legal: Legal
     
-    public let effect: String
+    public let effect: String?
     public let trainerType: String?
     
     public init(id: String, localId: String, name: String, image: String?, category: String, illustrator: String?, rarity: String?, set: SetBrief, variants: CardVariants, boosters: [Booster]?, pricing: Pricing, updated: Date, legal: Legal, effect: String, trainerType: String?) {
