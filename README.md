@@ -9,7 +9,7 @@ _The full API/SDK documentation in progress at [API Documentation - TCGdex](http
 
 ## Installation
 
-Add https://github.com/jozefdransfield/tcgdex-swift as Package Dependency in XCode
+Add https://github.com/tcgdex/tcgdex-swift as Package Dependency in XCode
 
 ## Usage
 
